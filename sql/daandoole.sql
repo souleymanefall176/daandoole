@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 26 nov. 2023 à 01:01
+-- Généré le : sam. 02 déc. 2023 à 04:16
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -20,28 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `daandoole`
 --
-
--- --------------------------------------------------------
-
---
--- Structure de la table `administrateur`
---
-
-CREATE TABLE `administrateur` (
-  `idAdministrateur` int(11) NOT NULL,
-  `nomAdministrateur` varchar(20) NOT NULL,
-  `prenomAdministrateur` varchar(30) NOT NULL,
-  `emailAdministrateur` varchar(100) NOT NULL,
-  `passwordAdministrateur` varchar(100) NOT NULL,
-  `roleAdministrateur` enum('SUPER_ADMIN','ADMIN') NOT NULL DEFAULT 'ADMIN'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `administrateur`
---
-
-INSERT INTO `administrateur` (`idAdministrateur`, `nomAdministrateur`, `prenomAdministrateur`, `emailAdministrateur`, `passwordAdministrateur`, `roleAdministrateur`) VALUES
-(1, 'Fall', 'souleymane', 'souleymanefallpro@gmail.com', 'Passer123@', 'SUPER_ADMIN');
 
 -- --------------------------------------------------------
 
@@ -84,28 +62,17 @@ CREATE TABLE `education` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `etablissement_education`
---
-
-CREATE TABLE `etablissement_education` (
-  `idEtablissement` int(11) NOT NULL,
-  `nomEtablissement` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `faireeducation`
 --
 
 CREATE TABLE `faireeducation` (
   `idFaireEducation` int(11) NOT NULL,
+  `nomEtablissement` varchar(50) NOT NULL,
   `niveauFaireEducation` varchar(50) NOT NULL,
   `specialisationFaireEducation` varchar(100) NOT NULL,
   `anneeDebutFaireEducation` year(4) NOT NULL,
   `anneeFinFaireEducation` year(4) NOT NULL,
-  `idTravailleurF` int(11) NOT NULL,
-  `idEtablissementF` int(11) NOT NULL
+  `idTravailleurF` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,8 +85,8 @@ CREATE TABLE `faireprofession` (
   `idFaireProfession` int(11) NOT NULL,
   `anneeDebutProfession` year(4) NOT NULL,
   `anneeFinProfession` year(4) NOT NULL,
+  `nomEntreprise` varchar(50) NOT NULL,
   `idTravailleurF` int(11) NOT NULL,
-  `idProfessionnelF` int(11) NOT NULL,
   `idProfessionF` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -167,29 +134,6 @@ CREATE TABLE `partage` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `profession`
---
-
-CREATE TABLE `profession` (
-  `idProfession` int(11) NOT NULL,
-  `nomProfession` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `professionnel`
---
-
-CREATE TABLE `professionnel` (
-  `idProfessionnel` int(11) NOT NULL,
-  `posteProfessionnel` varchar(100) NOT NULL,
-  `entrepriseProfessionnel` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `publication`
 --
 
@@ -198,19 +142,6 @@ CREATE TABLE `publication` (
   `datePublication` datetime NOT NULL,
   `urlMediaPublication` text NOT NULL,
   `descriptionPublication` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `qualification`
---
-
-CREATE TABLE `qualification` (
-  `idQualification` int(11) NOT NULL,
-  `titre` varchar(50) NOT NULL,
-  `anneeExperience` int(11) NOT NULL,
-  `niveauQualification` enum('debutant','intermediaire','avancee') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -236,16 +167,7 @@ CREATE TABLE `realisation` (
 CREATE TABLE `recruteur` (
   `idRecruteur` int(11) NOT NULL,
   `nomEntreprise` varchar(100) NOT NULL,
-  `secteurActivite` varchar(50) NOT NULL,
-  `villeEntreprise` varchar(50) NOT NULL,
-  `paysEntreprise` varchar(50) NOT NULL,
-  `telephoneEntreprise` varchar(14) NOT NULL,
-  `emailEntreprise` varchar(100) NOT NULL,
-  `linkedinEntreprise` text NOT NULL,
-  `descriptionEntreprise` text NOT NULL,
-  `siteWebEntreprise` text NOT NULL,
-  `nombreEtoilesEntreprise` decimal(10,0) NOT NULL,
-  `idAmisRecruteursF` int(11) NOT NULL,
+  `dateDebutEntreprise` date NOT NULL,
   `idUsersF` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -269,32 +191,9 @@ CREATE TABLE `relationsamis` (
 
 CREATE TABLE `travailleur` (
   `idTravailleur` int(11) NOT NULL,
-  `dateNaissanceTravailleur` date NOT NULL,
-  `lieuNaissanceTravailleur` varchar(100) NOT NULL,
-  `photoProfilTravailleur` text NOT NULL,
-  `villeTravailleur` varchar(50) NOT NULL,
-  `paysTravailleur` varchar(50) NOT NULL,
-  `telephoneTravailleur` varchar(14) NOT NULL,
-  `emailTravailleur` varchar(100) NOT NULL,
-  `linkedinTravailleur` text NOT NULL,
-  `descriptionTravailleur` text NOT NULL,
-  `portofolioTravailleur` text NOT NULL,
-  `nombreEtoileTravailleur` decimal(10,0) NOT NULL,
   `qualificationTravailleur` varchar(100) NOT NULL,
   `etatTravailleur` enum('SOUS_CONTRAT','SANS_CONTRAT','','') NOT NULL,
   `idUsersF` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `travailleur_qualification`
---
-
-CREATE TABLE `travailleur_qualification` (
-  `idTravailleurQualification` int(11) NOT NULL,
-  `idTravailleurF` int(11) NOT NULL,
-  `idQualificationF` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -308,25 +207,31 @@ CREATE TABLE `users` (
   `nomUser` varchar(20) NOT NULL,
   `prenomUser` varchar(30) NOT NULL,
   `dateNaissanceUser` date NOT NULL,
+  `lieuNaissanceUser` text NOT NULL,
+  `typeUser` enum('RECRUTEUR','TRAVAILLEUR','ADMIN','SUPER_ADMIN') NOT NULL,
   `emailUser` varchar(100) NOT NULL,
-  `passwordUser` varchar(100) NOT NULL,
-  `typeUser` enum('RECRUTEUR','TRAVAILLEUR','','') NOT NULL,
   `photoProfilUser` text NOT NULL,
+  `passwordUser` varchar(100) NOT NULL,
   `statutUser` tinyint(1) NOT NULL DEFAULT 0,
-  `notificationUser` text NOT NULL,
-  `idAmisF` int(11) NOT NULL
+  `villeUser` varchar(50) NOT NULL,
+  `sitewebUser` text NOT NULL,
+  `telephoneUser` varchar(9) NOT NULL,
+  `linkedinUser` text NOT NULL,
+  `nombreEtoilesUser` decimal(10,0) NOT NULL,
+  `descriptionUser` text NOT NULL,
+  `idAmisF` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`idUser`, `nomUser`, `prenomUser`, `dateNaissanceUser`, `lieuNaissanceUser`, `typeUser`, `emailUser`, `photoProfilUser`, `passwordUser`, `statutUser`, `villeUser`, `sitewebUser`, `telephoneUser`, `linkedinUser`, `nombreEtoilesUser`, `descriptionUser`, `idAmisF`) VALUES
+(1, 'FALL', 'SOULEYMANE', '2023-09-16', 'PIKINE', 'ADMIN', 'souleymanefall176@gmail.com', '', 'Passer123@', 0, 'Dakar', '', '777151061', '', 0, '', NULL);
 
 --
 -- Index pour les tables déchargées
 --
-
---
--- Index pour la table `administrateur`
---
-ALTER TABLE `administrateur`
-  ADD PRIMARY KEY (`idAdministrateur`),
-  ADD UNIQUE KEY `unique_email` (`emailAdministrateur`);
 
 --
 -- Index pour la table `commentaire`
@@ -351,18 +256,11 @@ ALTER TABLE `education`
   ADD PRIMARY KEY (`idEducation`);
 
 --
--- Index pour la table `etablissement_education`
---
-ALTER TABLE `etablissement_education`
-  ADD PRIMARY KEY (`idEtablissement`);
-
---
 -- Index pour la table `faireeducation`
 --
 ALTER TABLE `faireeducation`
   ADD PRIMARY KEY (`idFaireEducation`),
-  ADD KEY `fk_faireeducation_travailleur` (`idTravailleurF`),
-  ADD KEY `fk_faireeducation_etablissement` (`idEtablissementF`);
+  ADD KEY `fk_faireeducation_travailleur` (`idTravailleurF`);
 
 --
 -- Index pour la table `faireprofession`
@@ -370,7 +268,6 @@ ALTER TABLE `faireeducation`
 ALTER TABLE `faireprofession`
   ADD PRIMARY KEY (`idFaireProfession`),
   ADD KEY `fk_faireprofession_travailleur` (`idTravailleurF`),
-  ADD KEY `fk_faireprofession_professionnel` (`idProfessionnelF`),
   ADD KEY `fk_faireprofession_profession` (`idProfessionF`);
 
 --
@@ -399,28 +296,10 @@ ALTER TABLE `partage`
   ADD KEY `fk_partage_user` (`idUserF`);
 
 --
--- Index pour la table `profession`
---
-ALTER TABLE `profession`
-  ADD PRIMARY KEY (`idProfession`);
-
---
--- Index pour la table `professionnel`
---
-ALTER TABLE `professionnel`
-  ADD PRIMARY KEY (`idProfessionnel`);
-
---
 -- Index pour la table `publication`
 --
 ALTER TABLE `publication`
   ADD PRIMARY KEY (`idPublication`);
-
---
--- Index pour la table `qualification`
---
-ALTER TABLE `qualification`
-  ADD PRIMARY KEY (`idQualification`);
 
 --
 -- Index pour la table `realisation`
@@ -434,8 +313,7 @@ ALTER TABLE `realisation`
 --
 ALTER TABLE `recruteur`
   ADD PRIMARY KEY (`idRecruteur`),
-  ADD KEY `fk_recruteur_users` (`idUsersF`),
-  ADD KEY `fk_recruteurs_amis` (`idAmisRecruteursF`);
+  ADD KEY `fk_recruteur_users` (`idUsersF`);
 
 --
 -- Index pour la table `relationsamis`
@@ -453,30 +331,16 @@ ALTER TABLE `travailleur`
   ADD KEY `fk_travailleur_user` (`idUsersF`);
 
 --
--- Index pour la table `travailleur_qualification`
---
-ALTER TABLE `travailleur_qualification`
-  ADD PRIMARY KEY (`idTravailleurQualification`),
-  ADD KEY `fk_travailleurQualification_travailleur` (`idTravailleurF`),
-  ADD KEY `fk_travailleurQualification_qualification` (`idQualificationF`);
-
---
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`idUser`),
-  ADD UNIQUE KEY `unique` (`emailUser`),
+  ADD UNIQUE KEY `emailUser` (`emailUser`),
   ADD KEY `fk_users_amis` (`idAmisF`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
-
---
--- AUTO_INCREMENT pour la table `administrateur`
---
-ALTER TABLE `administrateur`
-  MODIFY `idAdministrateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `commentaire`
@@ -527,22 +391,10 @@ ALTER TABLE `partage`
   MODIFY `idPartage` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `professionnel`
---
-ALTER TABLE `professionnel`
-  MODIFY `idProfessionnel` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT pour la table `publication`
 --
 ALTER TABLE `publication`
   MODIFY `idPublication` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `qualification`
---
-ALTER TABLE `qualification`
-  MODIFY `idQualification` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `realisation`
@@ -569,16 +421,10 @@ ALTER TABLE `travailleur`
   MODIFY `idTravailleur` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `travailleur_qualification`
---
-ALTER TABLE `travailleur_qualification`
-  MODIFY `idTravailleurQualification` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Contraintes pour les tables déchargées
@@ -597,7 +443,6 @@ ALTER TABLE `commentaire`
 -- Contraintes pour la table `faireeducation`
 --
 ALTER TABLE `faireeducation`
-  ADD CONSTRAINT `fk_faireeducation_etablissement` FOREIGN KEY (`idEtablissementF`) REFERENCES `etablissement_education` (`idEtablissement`),
   ADD CONSTRAINT `fk_faireeducation_travailleur` FOREIGN KEY (`idTravailleurF`) REFERENCES `travailleur` (`idTravailleur`);
 
 --
@@ -605,7 +450,6 @@ ALTER TABLE `faireeducation`
 --
 ALTER TABLE `faireprofession`
   ADD CONSTRAINT `fk_faireprofession_profession` FOREIGN KEY (`idProfessionF`) REFERENCES `profession` (`idProfession`),
-  ADD CONSTRAINT `fk_faireprofession_professionnel` FOREIGN KEY (`idProfessionnelF`) REFERENCES `professionnel` (`idProfessionnel`),
   ADD CONSTRAINT `fk_faireprofession_travailleur` FOREIGN KEY (`idTravailleurF`) REFERENCES `travailleur` (`idTravailleur`);
 
 --
@@ -653,13 +497,6 @@ ALTER TABLE `relationsamis`
 --
 ALTER TABLE `travailleur`
   ADD CONSTRAINT `fk_travailleur_user` FOREIGN KEY (`idUsersF`) REFERENCES `users` (`idUser`);
-
---
--- Contraintes pour la table `travailleur_qualification`
---
-ALTER TABLE `travailleur_qualification`
-  ADD CONSTRAINT `fk_travailleurQualification_qualification` FOREIGN KEY (`idQualificationF`) REFERENCES `qualification` (`idQualification`),
-  ADD CONSTRAINT `fk_travailleurQualification_travailleur` FOREIGN KEY (`idTravailleurF`) REFERENCES `travailleur` (`idTravailleur`);
 
 --
 -- Contraintes pour la table `users`
